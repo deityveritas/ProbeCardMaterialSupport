@@ -1,0 +1,15 @@
+vectara:
+  corpus_id: 5
+  customer_id: 1866367850
+  reindex: true
+
+crawling:
+  crawler_type: arxiv
+
+arxiv_crawler:
+  n_papers: 1000000
+  query_terms: "probe" 
+  start_year: 2016
+  arxiv_category: "cs"
+  sort_by: "citations"
+

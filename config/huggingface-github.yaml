@@ -1,0 +1,21 @@
+vectara:
+  corpus_id: 156
+  customer_id: 1526022105
+  reindex: true
+
+crawling:
+  crawler_type: github
+
+github_crawler:
+  owner: "huggingface"
+  repos:
+    [
+      "accelerate",
+      "datasets",
+      "diffusers",
+      "optimum",
+      "peft",
+      "tokenizers",
+      "transformers",
+    ]
+  crawl_code: false

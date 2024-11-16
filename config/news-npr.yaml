@@ -1,0 +1,20 @@
+vectara:
+  corpus_id: 155
+  customer_id: 1526022105
+  reindex: false
+
+crawling:
+  crawler_type: rss
+
+rss_crawler:
+  source: npr
+  rss_pages: [
+    "https://feeds.npr.org/1001/rss.xml", "https://www.npr.org/rss/rss.php?id=1001", "https://www.npr.org/rss/rss.php?id=1032",
+    "https://www.npr.org/rss/rss.php?id=1006", "https://www.npr.org/rss/rss.php?id=1128", "https://www.npr.org/rss/rss.php?id=1007",
+    "https://www.npr.org/rss/rss.php?id=1019", "https://www.npr.org/rss/rss.php?id=1004", "https://www.npr.org/rss/rss.php?id=1003",
+    "https://www.npr.org/rss/rss.php?id=1014", "https://www.npr.org/rss/rss.php?id=1013", "https://www.npr.org/rss/rss.php?id=1008",
+    "https://www.npr.org/rss/rss.php?id=1101", "https://www.npr.org/rss/rss.php?id=1045"
+  ]
+  days_past: 30
+  delay: 1
+  extraction: playwright           # pdf or playwright

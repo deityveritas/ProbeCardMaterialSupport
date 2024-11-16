@@ -1,0 +1,27 @@
+vectara:
+  corpus_id: 5
+  customer_id: 1866367850
+  reindex: true
+
+crawling:
+  crawler_type: website
+
+website_crawler:
+  urls: [
+         # "https://tw.misumi-ec.com/vona2/mech/M0500000000/M0502000000/",
+         # "https://next-gen.materialsproject.org/materials?"
+         "https://arxiv.org/search/?query=Material&searchtype=all&source=header"
+         #"https://next-gen.materialsproject.org/materials?chemsys=Pd-Ag-Cu"
+         #"https://next-gen.materialsproject.org/materials/mp-1095713?chemsys=Pd-Ag-Cu#literature_references"
+         # "https://www.robertlaminage.com/en/tools-and-technical-data/alloys-list?gad_source=5&gclid=EAIaIQobChMIqJ6es67BhQMVfx17Bx3YVwREEAAYASAAEgLTHPD_BwE"
+        ]
+         #"https://www.researchgate.net/publication/378758120_PROTAC-Design-Evaluator_PRODE_An_Advanced_Method_for_In-Silico_PROTAC_Design"
+         #"https://gpss1.tipo.gov.tw/gpsskmc/gpss_api?userCode=896fC3BB65af10B4&patDB=TWA,TWB&patAG=A,B&patTY=I&TI=探針&ID=20200101:20240415&expFld=PN,AN,ID,AD,TI&expFmt=xml&expQty=100"]
+         # "https://gpss1.tipo.gov.tw/gpsskmc/gpssbkm?@@622940244","https://gpss1.tipo.gov.tw/gpssbkmusr/00069/TWAA-202412652.pdf",
+         # "https://gpss1.tipo.gov.tw/gpsskmc/gpssbkm?004514640006030100000000000000000D200000003F000000000^TW_AN_TW202412652A__I^075A9EB8646A63234C0DC86064F5830DCDE0686223134CD7C4BEBEE414D7CCC06E6653930C0CC082A8F2334D4EBC606003^XX0_11""]
+  delay: 1
+  max_depth: 2
+  pages_source: crawl
+  pos_regex: [".*"]
+  extraction: playwrig
+  ray_workers: 0

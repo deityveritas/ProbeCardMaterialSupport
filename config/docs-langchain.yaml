@@ -1,0 +1,27 @@
+vectara:
+  corpus_id: 163
+  customer_id: 1526022105
+  reindex: true
+
+crawling:
+  crawler_type: docs
+
+docs_crawler:
+  base_urls:
+    [
+      "https://docs.langchain.com/docs",
+      "https://python.langchain.com",
+      "https://js.langchain.com",
+      "https://blog.langchain.dev",
+    ]
+  pos_regex:
+    [
+      "https://docs.langchain.com/docs.*",
+      "https://python.langchain.com/docs.*",
+      "https://js.langchain.com/docs.*",
+      "https://api.langchain.dev/en/latest.*",
+      "https://blog.langchain.dev.*",
+    ]
+  neg_regex: []
+  extensions_to_ignore: ["md", "rst", "ipynb", "txt"]
+  docs_system: docusaurus

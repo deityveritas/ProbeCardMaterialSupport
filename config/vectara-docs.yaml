@@ -1,0 +1,15 @@
+vectara:
+  corpus_id: 210
+  customer_id: 1526022105
+  reindex: true
+
+crawling:
+  crawler_type: docs
+
+docs_crawler:
+  base_urls: ["https://docs.vectara.com/docs"]
+  pos_regex: [".*vectara.com/docs.*"]
+  neg_regex: [".*vectara.com/docs/rest-api/.*"]
+  extensions_to_ignore: ["php", "java", "py", "js"]
+  docs_system: docusaurus
+

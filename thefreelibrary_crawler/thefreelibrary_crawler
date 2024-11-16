@@ -1,0 +1,167 @@
+import os
+import re
+import time
+import random
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urlparse
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+
+
+# Main function for crawling data
+def main(crawl_url, css_list, output_path, key_word):
+    # Recursive function for crawling data
+    def crawl_data(url, headers, css_list, index):
+        if index+1 > len(css_list):
+            return
+        global count
+        base_url = urlparse(url).scheme + "://" + urlparse(url).netloc
+        if index == len(css_list)-1:
+            is_close = True
+        else:
+            is_close = False
+        selected_datas = find_elements_by_requests(url, headers, css_list[index], is_close)
+        if not selected_datas:
+            if index == len(css_list)-1:
+                return
+            else:
+                crawl_data(url, headers, css_list, index=index+1)
+        for data in selected_datas:
+            url = base_url + data["href"]
+            print(count)
+            count += 1
+            if key_word in data.text.lower():
+                write_data(output_path, f"{data.text}\n{base_url}{data['href']}\n\n")
+            crawl_data(url, headers, css_list, index=index+1)
+    
+    
+    # Call the crawl_data function to start crawling
+    headers = {'user-agent': "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"}
+    # If none of the CSS selectors in the list match any elements in the HTML content of the crawl URL, then return without further crawling
+    if not any([BeautifulSoup(requests.get(crawl_url, headers=headers).text,"html.parser").select(css) for css in css_list]):
+        return
+    crawl_data(crawl_url, headers, css_list, index=0)
+
+
+# Write data to file           
+def write_data(path, conente):
+    with open(path, 'a', encoding='utf-8') as f:
+        f.write(conente)
+   
+        
+# Find elements by requests   
+def find_elements_by_requests(url, headers, css, is_close):
+    r = requests.get(url, headers=headers)
+    soup = BeautifulSoup(r.text,"html.parser")
+    res = soup.select(css)
+    if not res:
+        selenium_url(url, css, is_close)
+    return res
+
+
+# Find elements by Selenium
+def selenium_url(url, css, is_close):
+    def find_elements_by_selenium(url, css):
+        driver.get(url)
+        time.sleep(random.uniform(2.1, 4.2))
+        random_call(driver)
+        html_content = driver.page_source
+        soup = BeautifulSoup(html_content, "html.parser")
+        res = soup.select(css)
+        return res      
+    res = find_elements_by_selenium(url, css)
+    global driver
+    if not res and is_close==True:
+        t = 0
+        while not res and t < 2:
+            driver.quit() 
+            time.sleep(30)
+            driver = webdriver.Chrome()
+            res = find_elements_by_selenium(url, css)
+            t += 1
+    return res
+
+
+
+
+# Simulate browser action: Scroll down the page
+def roll_down(driver):
+    driver.execute_script("window.scrollTo(0, 500);")
+    time.sleep(0.5)
+    driver.execute_script("window.scrollTo(0, 212);")
+    time.sleep(0.5)
+# Simulate browser action: Scroll to the bottom of the page
+def roll_bottom(driver):
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    time.sleep(0.5)
+# Simulate browser action: Click
+def click(driver):
+    element = driver.find_element(By.ID, "logo")  # Get the element to click
+    actions = ActionChains(driver)  # Create ActionChains object
+    actions.move_to_element_with_offset(element, -100, 500).click().perform()  # Move the mouse to the specified position of the element and click
+# Simulate browser action: Enter another URL
+def enter_other_url(driver):
+    driver.get("https://translate.google.com.tw/?hl=zh-TW")
+    time.sleep(random.uniform(2.1, 4.2))
+    driver.back()
+# Simulate browser action: Do nothing    
+def do_nothing(driver):
+    pass
+# Randomly call a browser action
+def random_call(driver):
+    functions = [roll_down, roll_bottom, enter_other_url] + [do_nothing]*5
+    random_function = random.choice(functions)
+    random_function(driver)
+
+# Convert crawled URLs to HTML files  
+def usl_to_html(output_path):
+    def save_html(url, save_path):
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                with open(save_path, 'w', encoding='utf-8') as f:
+                    f.write(response.text)
+                # print(f"Successfully saved HTML content to {url}")
+            else:
+                print(f"Failed to fetch {url}. Status code: {response.status_code}")
+        except Exception as e:
+            print(f"An error occurred: {e}")    
+            
+    save_base_path = os.path.dirname(output_path) + "\html"
+    if not os.path.exists(save_base_path):
+        os.makedirs(save_base_path)
+    with open(output_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+    for i in range(0,len(lines),3):
+        filename = re.sub(r'[^\w\s.-]', '', lines[i]).replace('\n', 'html')
+        filename = filename if len(filename) < 150 else filename[:150]+'.html'
+        url = lines[i+1].replace('\n', '')
+        if url[:5] != "https":
+            print(i, url)
+            break
+        else:
+            save_path = os.path.join(save_base_path, filename)
+            save_html(url, save_path)
+    
+if __name__ == "__main__":
+    # The starting URL to crawl
+    crawl_url = "https://www.thefreelibrary.com/Science+and+Technology-p1+Chemistry"
+    # Define the CSS list for recursive crawling
+    css_list = ["tr td a[title]", "div.months a", "div.cal_days tr td a", "tr td.title a"]
+    # The keyword to search for
+    key_word = "probe"
+    # File path to save the output results
+    output_path = r'C:\Users\user\Desktop\output.txt'
+    # Initialize the counter
+    count = 0
+    # Open chrome
+    driver = webdriver.Chrome() 
+    # Main function for crawling data
+    main(crawl_url, css_list, output_path, key_word)
+    # Close chrome
+    driver.quit() 
+    # Convert crawled URLs to HTML files  
+    usl_to_html(output_path)
+

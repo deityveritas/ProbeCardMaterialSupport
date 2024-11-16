@@ -1,0 +1,23 @@
+vectara:
+  corpus_id: 244
+  customer_id: 1526022105
+  reindex: true
+
+crawling:
+  crawler_type: fmp
+
+fmp_crawler:
+  tickers:
+    [
+      "AAPL",
+      "AMZN",
+      "GOOG",
+      "MSFT",
+      "NVDA",
+      "SNOW",
+      "TSLA",
+      "TEAM",
+    ]
+
+  start_year: 2015
+  end_year: 2023

@@ -1,0 +1,10 @@
+vectara:
+  corpus_id: 142
+  customer_id: 1526022105
+  reindex: false
+
+crawling:
+  crawler_type: discourse
+
+discourse_crawler:
+  base_url: "https://discuss.vectara.com"

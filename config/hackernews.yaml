@@ -1,0 +1,12 @@
+vectara:
+  corpus_id: 3
+  customer_id: 1169579801
+  reindex: false
+
+crawling:
+  crawler_type: hackernews
+
+hackernews_crawler:
+  max_articles: 1000
+  days_back: 3
+  days_back_comprehensive: false
